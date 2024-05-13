@@ -143,7 +143,7 @@ pub trait OperateUsers {
 }
 
 /// A struct containing the payload for creating a user.
-#[derive(Serialize)]
+#[derive(Default, Serialize)]
 pub struct CreateUserPayload {
     pub connection: String,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -179,7 +179,7 @@ pub struct CreateUserPayload {
 }
 
 /// A struct containing the payload for updating a user.
-#[derive(Serialize)]
+#[derive(Default, Serialize)]
 pub struct UpdateUserPayload {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub blocked: Option<bool>,
@@ -352,23 +352,7 @@ impl UpdateUserPayload {
     pub fn from_connection(connection: &str) -> Self {
         Self {
             connection: Some(connection.to_owned()),
-            email: None,
-            phone_number: None,
-            user_metadata: None,
-            blocked: None,
-            email_verified: None,
-            phone_verified: None,
-            app_metadata: None,
-            given_name: None,
-            family_name: None,
-            name: None,
-            nickname: None,
-            picture: None,
-            password: None,
-            username: None,
-            verify_email: None,
-            verify_phone_number: None,
-            client_id: None,
+            ..Default::default()
         }
     }
 }
@@ -382,21 +366,7 @@ impl CreateUserPayload {
     pub fn from_connection(connection: &str) -> Self {
         Self {
             connection: connection.to_owned(),
-            email: None,
-            phone_number: None,
-            user_metadata: None,
-            blocked: None,
-            email_verified: None,
-            phone_verified: None,
-            app_metadata: None,
-            given_name: None,
-            family_name: None,
-            name: None,
-            nickname: None,
-            picture: None,
-            user_id: None,
-            password: None,
-            username: None,
+            ..Default::default()
         }
     }
 }
