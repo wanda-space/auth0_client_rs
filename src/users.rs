@@ -236,6 +236,8 @@ pub struct UserResponse {
     pub nickname: String,
     pub picture: String,
     pub identities: Vec<Identity>,
+    #[serde(default)]
+    pub user_metadata: Option<serde_json::Value>,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
@@ -412,6 +414,7 @@ mod tests {
                             "isSocial": false
                           }
                         ],
+                        "user_metadata": {},
                         "name": "test@example.com",
                         "nickname": "test",
                         "picture": "https://s.gravatar.com/avatar/108cfa0160355a6aef1acdaa4493755c?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fth.png",
@@ -430,6 +433,16 @@ mod tests {
             let resp = client.get_user("1234").await.unwrap();
 
             assert_eq!(resp.email, Some("test@example.com".to_owned()));
+        }
+
+        #[tokio::test]
+        async fn works_with_user_metadata() {
+            let _m = get_user_mock();
+            let mut client = new_client();
+
+            let resp = client.get_user("1234").await.unwrap();
+
+            assert_eq!(resp.user_metadata, Some(json!({})));
         }
     }
 
