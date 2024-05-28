@@ -42,7 +42,11 @@ pub trait Authenticatable {
     /// # Ok(())
     /// # }
     /// ```
-    async fn authenticate_user(&mut self, username: String, password: String) -> Auth0Result<()>;
+    async fn authenticate_user(
+        &mut self,
+        username: String,
+        password: String,
+    ) -> Auth0Result<String>;
 
     /// Calls an authentication request with body
     async fn authenticate_with_body(
@@ -92,7 +96,11 @@ impl Authenticatable for Auth0Client {
         Ok(response.access_token)
     }
 
-    async fn authenticate_user(&mut self, username: String, password: String) -> Auth0Result<()> {
+    async fn authenticate_user(
+        &mut self,
+        username: String,
+        password: String,
+    ) -> Auth0Result<String> {
         let url = URL_REGEX
             .replace_all(&format!("{}/oauth/token", self.domain), "$1")
             .to_string();
@@ -111,9 +119,9 @@ impl Authenticatable for Auth0Client {
             body
         };
 
-        self.authenticate_with_body(body).await?;
+        let response = self.authenticate_with_body(body).await?;
 
-        Ok(())
+        Ok(response.access_token)
     }
 
     async fn authenticate_with_body(
