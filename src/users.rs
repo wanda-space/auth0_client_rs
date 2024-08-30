@@ -238,6 +238,8 @@ pub struct UserResponse {
     pub identities: Vec<Identity>,
     #[serde(default)]
     pub user_metadata: Option<serde_json::Value>,
+    #[serde(default)]
+    pub app_metadata: Option<serde_json::Value>,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
